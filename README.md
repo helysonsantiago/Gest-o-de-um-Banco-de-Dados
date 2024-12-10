@@ -1,72 +1,121 @@
 
-# Projeto: Banco de Dados de Gerenciamento de Entidades
+# Gestão de Hotéis e Restaurantes
 
-## 🛠️ Objetivo do Projeto
-Este projeto tem como objetivo implementar um banco de dados robusto para gerenciar as principais entidades e relacionamentos de um sistema abrangente. O banco de dados foi projetado para atender às necessidades de cadastro, rastreamento e gerenciamento de clientes, campanhas de marketing, estudantes, cursos, propriedades e muito mais.
+## Criadores
+- **Luiz Felipe Rocha**
+- **Helyson Santiago**
 
 ---
 
-## 📂 Estrutura do Repositório
+## Descrição do Projeto
+Este projeto visa a criação e a gestão de um banco de dados para hotéis e restaurantes, cobrindo operações essenciais como:
+- Registro e consulta de clientes.
+- Controle de reservas de quartos.
+- Gestão de pedidos e itens consumidos no restaurante.
+O banco de dados foi modelado com base no Modelo Físico de Dados fornecido e desenvolvido utilizando o Oracle.
 
-```plaintext
-/
-├── DDL/
-│   └── estrutura.sql       # Script DDL para criação das tabelas e restrições
-├── DML/
-│   └── dados.sql           # Script DML para inserção de dados representativos
-├── README.md               # Documentação do projeto
+---
+
+## Estrutura do Banco de Dados
+O banco de dados contém as seguintes tabelas:
+
+### **1. CLIENTES**
+- **Descrição:** Armazena informações dos clientes cadastrados.
+- **Colunas:**
+  - `CLIENTE_ID` (PK): Identificador único.
+  - `NOME`: Nome do cliente (obrigatório).
+  - `EMAIL`: Email do cliente.
+  - `TELEFONE`: Telefone para contato.
+
+### **2. QUARTOS**
+- **Descrição:** Detalhes dos quartos disponíveis no hotel.
+- **Colunas:**
+  - `QUARTO_ID` (PK): Identificador único do quarto.
+  - `NUMERO`: Número do quarto (obrigatório).
+  - `TIPO`: Tipo do quarto (Standard, Suíte, etc.).
+  - `PRECO_DIARIA`: Valor da diária do quarto (obrigatório).
+
+### **3. RESERVAS**
+- **Descrição:** Registra as reservas feitas pelos clientes.
+- **Colunas:**
+  - `RESERVA_ID` (PK): Identificador único da reserva.
+  - `CLIENTE_ID` (FK): Relacionado a `CLIENTES`.
+  - `QUARTO_ID` (FK): Relacionado a `QUARTOS`.
+  - `DATA_CHECKIN`: Data de entrada no quarto.
+  - `DATA_CHECKOUT`: Data de saída do quarto.
+  - `STATUS`: Status da reserva (Confirmada, Cancelada, etc.).
+
+### **4. PEDIDOS**
+- **Descrição:** Registra os pedidos feitos pelos clientes no restaurante.
+- **Colunas:**
+  - `PEDIDO_ID` (PK): Identificador único do pedido.
+  - `CLIENTE_ID` (FK): Relacionado a `CLIENTES`.
+  - `DATA_PEDIDO`: Data e hora do pedido.
+  - `TOTAL`: Valor total do pedido.
+  - `STATUS`: Status do pedido (Pago, Pendente, etc.).
+
+### **5. ITENS_PEDIDO**
+- **Descrição:** Detalha os itens associados a cada pedido.
+- **Colunas:**
+  - `ITEM_PEDIDO_ID` (PK): Identificador único do item do pedido.
+  - `PEDIDO_ID` (FK): Relacionado a `PEDIDOS`.
+  - `NOME_ITEM`: Nome do item consumido.
+  - `QUANTIDADE`: Quantidade do item consumido.
+  - `PRECO_UNITARIO`: Valor unitário do item.
+
+---
+
+## Relacionamentos
+- **CLIENTES → RESERVAS:** Um cliente pode ter várias reservas.
+- **QUARTOS → RESERVAS:** Um quarto pode ser reservado por vários clientes (em tempos diferentes).
+- **CLIENTES → PEDIDOS:** Um cliente pode realizar vários pedidos.
+- **PEDIDOS → ITENS_PEDIDO:** Um pedido pode conter vários itens.
+
+---
+
+## Instruções de Uso
+
+### **Requisitos**
+- Oracle Database instalado.
+- Ferramenta para executar scripts SQL, como SQL*Plus ou SQL Developer.
+
+### **Execução dos Scripts**
+1. **Criação do Banco de Dados:**
+   - Execute o arquivo `estrutura.sql` localizado na pasta `DDL/` para criar as tabelas e suas restrições.
+   - Exemplo de comando:
+     ```sql
+     @estrutura.sql
+     ```
+2. **Inserção de Dados Representativos:**
+   - Execute o arquivo `dados.sql` localizado na pasta `DML/` para inserir os dados iniciais.
+   - Exemplo de comando:
+     ```sql
+     @dados.sql
+     ```
+
+3. **Teste e Validação:**
+   - Utilize o script `test_script.sql` para validar as tabelas, os relacionamentos e os dados inseridos.
+   - Exemplo de comando:
+     ```sql
+     @test_script.sql
+     ```
+
+---
+
+## Estrutura do Repositório
+
+```
+/DDL/
+  estrutura.sql  -- Script para criar as tabelas e definições do banco de dados.
+/DML/
+  dados.sql      -- Script para inserir dados representativos nas tabelas.
+test_script.sql  -- Script para testar a integridade e os relacionamentos do banco.
+README.md        -- Documentação detalhada do projeto.
 ```
 
 ---
 
-## 🚀 Passos para Execução
+## Notas Finais
+O banco de dados foi projetado para simular operações essenciais de um hotel e restaurante, fornecendo uma base robusta e flexível para gerenciar clientes, reservas e pedidos. Qualquer dúvida ou sugestão de melhoria, entre em contato com os criadores do projeto.
 
-1. **Pré-requisitos**
-   - Banco de Dados Oracle instalado e configurado.
-   - Ferramenta para execução dos scripts, como SQL*Plus ou SQL Developer.
-
-2. **Configuração**
-   - Clone este repositório no seu ambiente local.
-   - Abra os scripts `estrutura.sql` e `dados.sql` nas ferramentas recomendadas.
-
-3. **Execução**
-   ### Passo 1: Criar as Tabelas
-   Execute o script `estrutura.sql` localizado na pasta `DDL/` para criar as tabelas e definir as restrições.
-
-   ### Passo 2: Inserir os Dados
-   Execute o script `dados.sql` localizado na pasta `DML/` para popular as tabelas com dados representativos.
-
-4. **Validação**
-   - Utilize consultas SQL para verificar a criação correta das tabelas.
-   - Valide os dados inseridos com consultas como `SELECT * FROM <nome_da_tabela>`.
-
----
-
-## 🔍 Descrição das Entidades e Relacionamentos
-
-### **Principais Tabelas**
-- **CLIENTES:** Armazena informações dos clientes, incluindo dados de contato e endereço.
-- **CAMPANHAS:** Gerencia campanhas de marketing, com datas e orçamentos.
-- **INTERAÇÕES:** Registra as interações dos clientes com campanhas, detalhando tipo e métrica.
-- **ESTUDANTES:** Dados de estudantes matriculados em cursos.
-- **CURSOS:** Gerencia os cursos oferecidos, com suas descrições e duração.
-- **PROPRIEDADES:** Controle de propriedades disponíveis para aluguel ou venda.
-- **VIAGENS:** Registro de transporte, incluindo rotas e status.
-
-### **Relacionamentos**
-- As tabelas são conectadas por chaves primárias e estrangeiras para garantir a integridade dos dados.
-- Exemplo: A tabela **INTERAÇÕES** possui chaves estrangeiras para **CLIENTES** e **CAMPANHAS**.
-
----
-
-## 📘 Regras de Negócio
-
-- **Restrições de Integridade:** Cada tabela possui restrições para garantir que os dados sejam consistentes, como `NOT NULL`, `UNIQUE` e relacionamentos por meio de chaves estrangeiras.
-- **Coerência dos Dados:** Os dados inseridos seguem as regras de negócio para simular um ambiente realista.
-- **Performance:** Índices foram configurados para melhorar a performance das consultas.
-
----
-
-## 📞 Suporte
-Em caso de dúvidas ou problemas, entre em contato com o administrador do projeto.
-
+**Luiz Felipe Rocha e Helyson Santiago**
